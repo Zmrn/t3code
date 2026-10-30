@@ -11,6 +11,7 @@ import { AndroidScreenHeader } from "../../components/ui/AndroidScreenHeader";
 import { useRemoteConnections } from "../../state/use-remote-environment-registry";
 import { LocalEnvironmentList } from "./LocalEnvironmentList";
 import { PullRequestRoutingSettings } from "./PullRequestRoutingSettings";
+import { T3SyncSection } from "../t3-sync/T3SyncSection";
 import { LinkedEnvironmentsSection } from "./LinkedEnvironmentsSection";
 
 export function ConnectionsRouteScreen() {
@@ -61,6 +62,7 @@ export function ConnectionsRouteScreen() {
           paddingTop: 16,
         }}
       >
+        <T3SyncSection />
         <LocalEnvironmentList
           environments={connectedEnvironments}
           expandedId={expandedId}
