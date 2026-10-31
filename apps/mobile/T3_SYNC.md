@@ -73,6 +73,23 @@ APK (JS bundled, no Metro):
 
 Install: `adb install -r` that file. The phone must be on the same tailnet as `100.104.211.62`. Open Environments, press **Sync**, then open a machine's threads. The first launch also syncs on its own.
 
+## Usage hub seed
+
+Usage limit sources are stored on each connected T3 machine, not in a separate phone list. Desktop Settings → Add hub writes the same `usageLimitSources` record. A private Android build can write the CliRelay hub when that machine's settings do not already have `http://100.104.211.62:8318` with a management key.
+
+The key is read from `EXPO_PUBLIC_T3_USAGE_HUB_KEY` while Metro bundles the release JS. It is not in source. A build without the variable does not seed.
+
+Windows, in the same command prompt as Gradle:
+
+```bat
+set EXPO_PUBLIC_T3_USAGE_HUB_KEY=the-management-key
+gradlew.bat :app:assembleRelease -PreactNativeArchitectures=arm64-v8a
+```
+
+The shell value is inlined into that APK. Do not commit it, and do not publish that APK on a public release.
+
+After the phone pairs a machine, Usage can show that hub's Claude and Codex accounts without Add hub. The machine's T3 server still has to reach the hub. A provider JSON-RPC `-32600` is unchanged by this seed.
+
 ## 给 Botp
 
-手机打开后会向 `http://100.104.211.62:8318/v1/t3/environments` 拉已登记的 T3 机器，并自动配对还没保存过的环境，不用逐台输入配对码。这不是官方 T3 Connect，也不同步 Providers。协议在本仓库 `t3-clirelay-sync/`（GitHub 上的 `Zmrn/t3-clirelay-sync` 需要有建库权限才能推送）。在 Windows 上用 `gradlew.bat :app:assembleRelease -PreactNativeArchitectures=arm64-v8a` 打已内置 JS 的 release APK；debug 包会等 Metro，不能单独用。
+手机启动后仍会自动拉取 `http://100.104.211.62:8318/v1/t3/environments` 并配对机器。带管理密钥的私有包还会在对方设置里还没有这个 hub 时写入 CliRelay 用量源，Usage 里应出现该 hub 的 Claude 和 Codex 账号，不用再点 Add hub。Provider 的 JSON-RPC `-32600` 仍会出现，这是预期。安装 release APK 后打开 Usage 即可查看。密钥只在打包时注入，不要提交到公开仓库。
