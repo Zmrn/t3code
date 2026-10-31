@@ -93,6 +93,8 @@ import {
 import { pruneNewTaskFlowStates } from "./features/threads/new-task-flow-state";
 import { pruneNewTaskBranchCheckouts } from "./features/threads/NewTaskDraftRouteScreen";
 import { installAppUpdateChecks } from "./features/updates/app-updates";
+import { installT3EnvironmentSync } from "./features/t3-sync/install";
+import { installUsageHubSeed } from "./features/usage/installUsageHubSeed";
 
 import "../global.css";
 
@@ -190,6 +192,8 @@ const appServiceDisposers = [
   installAppShortcuts(linkToAppPath),
   installAppUpdateChecks(),
   installShowcaseCapture(rootPathnameFromState),
+  installT3EnvironmentSync(),
+  installUsageHubSeed(),
 ];
 disposeOnFoundationReplace(typeof module === "undefined" ? undefined : module.hot, () => {
   for (const dispose of appServiceDisposers) dispose();
